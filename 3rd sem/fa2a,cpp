@@ -1,0 +1,204 @@
+/*using array*/
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Constants for array limits
+const int CART_LIMIT = 25;
+const int QUEUE_LIMIT = 50;
+
+// Stack for Shopping Cart
+class ShoppingCart {
+    string cart[CART_LIMIT];
+    int top;  // Index of the last item in the cart
+
+public:
+    ShoppingCart() {
+        top = -1;  // Cart is initially empty
+    }
+
+    // Add item to cart (Push in Stack)
+    void addItem() {
+        if (top >= CART_LIMIT - 1) {
+            cout << "Cart is full! Cannot add more items." << endl;
+            return;
+        }
+        cout << "Enter item to add to cart: ";
+        string item;
+        cin >> item;
+        cart[++top] = item;
+        cout << "Item added to cart!" << endl;
+    }
+
+    // Remove last item from cart (Pop in Stack)
+    void removeLastItem() {
+        if (top == -1) {
+            cout << "Cart is empty, nothing to remove!" << endl;
+        } else {
+            cout << "Removed last item: " << cart[top--] << endl;
+        }
+    }
+
+    // View last added item (Peek in Stack)
+    void displayLastItem() {
+        if (top == -1) {
+            cout << "Cart is empty!" << endl;
+        } else {
+            cout << "Last item in cart: " << cart[top] << endl;
+        }
+    }
+
+    // Check if cart is empty
+    bool isCartEmpty() {
+        return top == -1;
+    }
+
+    // Display all items in the cart
+    void viewCart() {
+        if (top == -1) {
+            cout << "Cart is empty!" << endl;
+        } else {
+            cout << "Items in cart:" << endl;
+            for (int i = top; i >= 0; --i) {
+                cout << cart[i] << endl;
+            }
+        }
+    }
+};
+
+// Queue for Order Delivery
+class OrderQueue {
+    string queue[QUEUE_LIMIT];
+    int front, rear;  // Front: dequeue, Rear: enqueue
+
+public:
+    OrderQueue() {
+        front = rear = -1;  // Queue is initially empty
+    }
+
+    // Place an order (Enqueue in Queue)
+    void placeOrder() {
+        if (rear == QUEUE_LIMIT - 1) {
+            cout << "Order queue is full! Cannot place more orders." << endl;
+            return;
+        }
+        cout << "Enter order to place: ";
+        string order;
+        cin >> order;
+        if (front == -1) {
+            front = 0;  // Queue was empty, reset front
+        }
+        queue[++rear] = order;
+        cout << "Order placed!" << endl;
+    }
+
+    // Process next order (Dequeue in Queue)
+    void processOrder() {
+        if (front == -1 || front > rear) {
+            cout << "No orders to process!" << endl;
+            front = rear = -1;  // Reset queue if it's empty
+        } else {
+            cout << "Processing order: " << queue[front++] << endl;
+        }
+    }
+
+    // View next order (Peek in Queue)
+    void peekNextOrder() {
+        if (front == -1 || front > rear) {
+            cout << "No pending orders!" << endl;
+        } else {
+            cout << "Next order in queue: " << queue[front] << endl;
+        }
+    }
+
+    // Check if queue is empty
+    bool isOrderQueueEmpty() {
+        return front == -1 || front > rear;
+    }
+
+    // Display all orders in the queue
+    void viewOrders() {
+        if (front == -1 || front > rear) {
+            cout << "No orders in the queue!" << endl;
+        } else {
+            cout << "Orders in queue:" << endl;
+            for (int i = front; i <= rear; ++i) {
+                cout << queue[i] << endl;
+            }
+        }
+    }
+};
+
+// Main program to test the shopping app scenario
+int main() {
+    ShoppingCart cart;
+    OrderQueue orders;
+
+    int choice;
+    while(1) {
+        cout << "\n--- Shopping App Menu ---\n";
+        cout << "1. Add Item to Cart\n";
+        cout << "2. Remove Last Item from Cart\n";
+        cout << "3. View Last Item in Cart\n";
+        cout << "4. View All Items in Cart\n";
+        cout << "5. Place Order\n";
+        cout << "6. Process Next Order\n";
+        cout << "7. View Next Order\n";
+        cout << "8. Check if Cart is Empty\n";
+        cout << "9. Check if Orders are Pending\n";
+        cout << "10. View All Orders in Queue\n";
+        cout << "11. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cart.addItem();
+                break;
+            case 2:
+                cart.removeLastItem();
+                break;
+            case 3:
+                cart.displayLastItem();
+                break;
+            case 4:
+                cart.viewCart();
+                break;
+            case 5:
+                orders.placeOrder();
+                break;
+            case 6:
+                orders.processOrder();
+                break;
+            case 7:
+                orders.peekNextOrder();
+                break;
+            case 8:
+                if (cart.isCartEmpty()) {
+                    cout << "Cart is empty!" << endl;
+                } else {
+                    cout << "Cart is not empty!" << endl;
+                }
+                break;
+            case 9:
+                if (orders.isOrderQueueEmpty()) {
+                    cout << "No pending orders!" << endl;
+                } else {
+                    cout << "Orders are pending!" << endl;
+                }
+                break;
+            case 10:
+                orders.viewOrders();
+                break;
+            case 11:
+                cout << "Exiting app..." << endl;
+                exit(0);
+                break;
+            default:
+                cout << "Invalid choice! Try again." << endl;
+                break;
+        }
+    } 
+
+    return 0;
+}
